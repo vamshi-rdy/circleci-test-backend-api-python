@@ -1,6 +1,17 @@
 version: 2.1
 
 jobs:
+  build:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
   deploy:
     docker:
       - image: circleci/python:3.8
@@ -33,27 +44,17 @@ jobs:
             pwd
             ls -la
       - run:
-          name: Deploy api
+          name: Run main.py
           command: |
-            zip function.zip Lambda.py
-            pwd
-            ls
-            # if aws lambda get-function --function-name lambda_handler; then
-            #   aws lambda update-function-code --function-name lambda_handler --zip-file fileb://function.zip --region $AWS_DEFAULT_REGION
-            # else
-              aws lambda create-function --function-name lambda_handler \
-                --zip-file fileb://function.zip \
-                --handler lambda_function.lambda_handler \
-                --runtime python3.8 \
-                --role arn:aws:iam::992382428282:role/lambdadeploytest \
-                --region $AWS_DEFAULT_REGION    
+            . venv/bin/activate
+            python main.py
 
 workflows:
   version: 2
   testdeploy:
     jobs:
       - deploy:
-          name: deploy-lambdafunction
+          name: deploy-api
           context: aws-credential-dev
           filters:
             branches:
