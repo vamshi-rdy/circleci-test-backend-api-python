@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Run main.py
           command: |
-            . venv/bin/activate
+            . venv/home/circleci/project
             python main.py
 
 workflows:
