@@ -44,10 +44,10 @@ jobs:
             pwd
             ls -la
       - run:
-          name: Run main.py
+          name: Run api.py
           command: |
-            . venv/home/circleci/project
-            python main.py
+            . venv/bin/activate
+            python api.py
 
 workflows:
   version: 2
