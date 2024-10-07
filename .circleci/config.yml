@@ -46,7 +46,12 @@ jobs:
       - run:
           name: Run api.py
           command: |
+            python -m venv venv
+            pwd
+            ls
             . venv/bin/activate
+            pwd
+            ls
             python api.py
 
 workflows:
